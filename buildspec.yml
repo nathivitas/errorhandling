@@ -1,29 +1,24 @@
 version: 0.2
 
-env:
-  variables:
-    IMAGE_TAG: "latest"
-    REPO_NAME: "yp-fulfillment"
-
 phases:
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
-      - ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-      - REGION=us-east-1
-      - REPO_URI=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME
-      - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $REPO_URI
+      - echo Logging in to Amazon ECR Public...
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+      - IMAGE_URI=public.ecr.aws/i0r7n1w5/yp-fulfillment:latest
+
   build:
     commands:
       - echo Building the Docker image...
-      - docker build -t $REPO_URI:$IMAGE_TAG .
+      - docker build -t $IMAGE_URI .
+
   post_build:
     commands:
-      - echo Pushing the Docker image to ECR...
-      - docker push $REPO_URI:$IMAGE_TAG
-      - echo Writing image URI to file...
-      - echo $REPO_URI:$IMAGE_TAG > imageDetail.txt
+      - echo Pushing the Docker image to ECR Public...
+      - docker push $IMAGE_URI
+      - echo $IMAGE_URI > imageDetail.txt
 
 artifacts:
   files:
     - imageDetail.txt
+
