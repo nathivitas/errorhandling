@@ -11,6 +11,11 @@ const sqs = new SQSClient({ region: REGION });
 const mdmQueueUrl = process.env.SQS_MDM_URL;
 const gingerQueueUrl = process.env.SQS_GINGER_URL;
 
+// ✅ Add this GET route for ALB health checks
+app.get('/fulfill', (req, res) => {
+  res.status(200).send('Health check OK');
+});
+
 app.post('/fulfill', async (req, res) => {
   const { businessName, shouldFailMdm, shouldFailGinger } = req.body;
   const fulfillmentId = randomUUID();
@@ -18,11 +23,9 @@ app.post('/fulfill', async (req, res) => {
   try {
     console.log(`[${fulfillmentId}] Starting fulfillment`);
 
-    // Simulate MDM
     if (shouldFailMdm) throw new Error('Simulated MDM failure');
     console.log(`[${fulfillmentId}] MDM succeeded`);
 
-    // Simulate Ginger
     if (shouldFailGinger) throw new Error('Simulated Ginger failure');
     console.log(`[${fulfillmentId}] Ginger succeeded`);
 
