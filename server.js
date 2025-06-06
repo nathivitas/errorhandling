@@ -12,7 +12,7 @@ const mdmQueueUrl = process.env.SQS_MDM_URL;
 const gingerQueueUrl = process.env.SQS_GINGER_URL;
 
 // ✅ Add this GET route for ALB health checks
-app.get('/fulfill', (req, res) => {
+app.get('/', (req, res) => {
   res.status(200).send('Health check OK');
 });
 
