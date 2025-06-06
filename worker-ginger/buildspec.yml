@@ -1,1 +1,16 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR Public...
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+      - IMAGE_TAG=latest
+      - REPO_URI=public.ecr.aws/i0r7n1w5/ginger-worker
+  build:
+    commands:
+      - docker build -t $REPO_URI:$IMAGE_TAG .
+  post_build:
+    commands:
+      - docker push $REPO_URI:$IMAGE_TAG
 
