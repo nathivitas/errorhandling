@@ -1,1 +1,9 @@
 
+{
+  "name": "worker-mdm",
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-sqs": "^3.500.0",
+    "axios": "^1.6.0"
+  }
+}
