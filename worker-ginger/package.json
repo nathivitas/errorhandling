@@ -1,1 +1,11 @@
 
+{
+  "name": "yp-worker-ginger",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "worker-ginger.js",
+  "dependencies": {
+    "@aws-sdk/client-sqs": "^3.520.0",
+    "axios": "^1.6.0"
+  }
+}
